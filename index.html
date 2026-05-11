@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Shruti Gupta | BCA Scholar & Web Alchemist</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #050510;
+            color: #ffffff;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+        #wave-bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            display: block;
+        }
+        .ambient-glow {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 50% 30%, rgba(80, 40, 120, 0.25) 0%, #050510 85%);
+            z-index: -1;
+            pointer-events: none;
+        }
+        .custom-cursor {
+            position: fixed;
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: radial-gradient(circle, #ffcf7a, #b77dff);
+            mix-blend-mode: difference;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: transform 0.1s ease;
+            box-shadow: 0 0 18px #ffd966;
+        }
+        .cursor-follower {
+            position: fixed;
+            width: 46px;
+            height: 46px;
+            border: 2px solid #ffbc6e;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9998;
+            transform: translate(-50%, -50%);
+            transition: transform 0.2s cubic-bezier(0.2, 0.9, 0.4, 1.1), width 0.2s, height 0.2s;
+            backdrop-filter: blur(3px);
+        }
+        @media (max-width: 768px) { .custom-cursor, .cursor-follower { display: none; } body { cursor: auto; } }
+        
+        header {
+            padding: 0.8rem 2rem;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            backdrop-filter: blur(18px);
+            background: rgba(8, 8, 25, 0.55);
+            border-bottom: 1px solid rgba(255, 188, 110, 0.4);
+        }
+        .header-container { max-width: 1300px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+        .logo {
+            font-size: 2rem;
+            font-weight: 800;
+            font-family: 'Playfair Display', serif;
+            background: linear-gradient(135deg, #ffcf7a, #c08aff, #ff9f7c);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .nav-links { display: flex; gap: 2.2rem; }
+        .nav-links a { color: #f0f0f5; text-decoration: none; font-weight: 500; font-size: 1rem; transition: all 0.3s; position: relative; }
+        .nav-links a:hover, .nav-links a.active { color: #ffcf7a; }
+        .nav-links a::after { content: ''; position: absolute; bottom: -6px; left: 0; width: 0; height: 2px; background: linear-gradient(90deg, #ffbc6e, #bf8aff); transition: width 0.3s; }
+        .nav-links a:hover::after { width: 100%; }
+        .mobile-menu-btn { display: none; background: none; border: none; color: #ffbc6e; font-size: 1.8rem; cursor: pointer; }
+        
+        .container { max-width: 1300px; margin: 0 auto; padding: 0 2rem; position: relative; z-index: 2; }
+        section { padding: 6rem 0 5rem; }
+        .section-title {
+            font-size: 2.8rem;
+            font-weight: 700;
+            font-family: 'Playfair Display', serif;
+            margin-bottom: 3rem;
+            position: relative;
+            display: inline-block;
+        }
+        .section-title::after { content: ''; position: absolute; bottom: -12px; left: 0; width: 85px; height: 4px; background: linear-gradient(90deg, #ffcf7a, #b77dff); border-radius: 4px; }
+        
+        .hero { min-height: 100vh; display: flex; align-items: center; }
+        .hero-row { display: flex; align-items: center; gap: 4rem; flex-wrap: wrap; }
+        .hero-content { flex: 1; }
+        .hero h1 { font-size: 4.5rem; font-weight: 800; font-family: 'Playfair Display', serif; margin-bottom: 0.8rem; }
+        .hero h1 span { background: linear-gradient(135deg, #ffcf7a, #cc9aff); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .typing-text { font-size: 1.5rem; color: #ffcf7a; margin-bottom: 1rem; min-height: 60px; font-weight: 500; }
+        .hero p { font-size: 1.2rem; color: #dddcec; margin-bottom: 2rem; }
+        
+        .btn-group {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        .btn {
+            display: inline-block;
+            padding: 0.9rem 2.4rem;
+            background: linear-gradient(135deg, #ffbc6e, #b87eff);
+            color: #0a0a1a;
+            border-radius: 60px;
+            text-decoration: none;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 22px -6px #b77dff80;
+            text-align: center;
+        }
+        .btn:hover { transform: translateY(-4px); box-shadow: 0 18px 30px -6px #ffbc6ecc; }
+        .btn-outline { background: transparent; border: 2px solid #ffcf7a; color: #ffcf7a; margin-left: 0; box-shadow: none; }
+        .btn-outline:hover { background: #ffcf7a; color: #050510; }
+        
+        .hero-image { flex: 1; text-align: center; }
+        /* SHAPE LIA SAURABH WALE CODE SE + HOVER EFFECT */
+        .profile-img {
+            width: 350px;
+            height: 350px;
+            object-fit: cover;
+            border: 3px solid rgba(255, 207, 122, 0.7);
+            box-shadow: 0 30px 45px -12px #b77dff;
+            animation: floatGlow 7s infinite alternate;
+            border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+            transition: all 0.5s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+        }
+        /* HOVER EFFECT - IMAGE PE HOVER KARNE PAR */
+        .profile-img:hover {
+            transform: scale(1.05);
+            box-shadow: 0 40px 60px -15px #b77dff;
+            border-color: rgba(255, 207, 122, 1);
+        }
+        @keyframes floatGlow { 0% { transform: translateY(0px); box-shadow: 0 20px 30px -10px #b77dff; } 100% { transform: translateY(-16px); box-shadow: 0 35px 50px -8px #ffbc6e; } }
+        
+        /* Cards */
+        .education-card, .skill-category, .strength-card, .project-card, .contact-info, .contact-form {
+            background: rgba(18, 18, 40, 0.65);
+            backdrop-filter: blur(14px);
+            border-radius: 32px;
+            border: 1px solid rgba(255, 207, 122, 0.3);
+            transition: all 0.4s ease;
+            box-shadow: 0 20px 35px -12px rgba(0,0,0,0.5);
+            overflow: hidden;
+        }
+        .education-card:hover, .skill-category:hover, .strength-card:hover, .project-card:hover { transform: translateY(-12px); border-color: #cc9aff; }
+        
+        .education-card { padding: 1.8rem; }
+        .education-card h3 { font-size: 1.5rem; color: #ffcf7a; margin-bottom: 0.3rem; }
+        .year-badge { display: inline-block; background: rgba(255, 188, 110, 0.2); color: #ffbc6e; padding: 0.3rem 0.8rem; border-radius: 50px; font-size: 0.8rem; margin: 0.5rem 0; width: fit-content; }
+        .education-card p { color: #dddcec; margin: 0.2rem 0; line-height: 1.4; }
+        
+        .skill-category { padding: 1.8rem; }
+        .skill-category h3 { font-size: 1.4rem; margin-bottom: 1.2rem; color: #ffcf7a; display: flex; align-items: center; gap: 0.8rem; }
+        .skill-item { margin-bottom: 1rem; }
+        .skill-info { display: flex; justify-content: space-between; margin-bottom: 0.3rem; font-size: 0.9rem; }
+        .skill-bar { height: 6px; background: rgba(255, 255, 255, 0.1); border-radius: 3px; overflow: hidden; }
+        .skill-progress { background: linear-gradient(90deg, #ffbc6e, #c08aff); height: 100%; border-radius: 3px; width: 0; transition: width 1.2s ease-out; }
+        
+        .project-img { width: 100%; height: 200px; object-fit: cover; }
+        .project-content { padding: 1.5rem; }
+        .project-content h3 { font-size: 1.3rem; margin-bottom: 0.5rem; color: #ffcf7a; }
+        .project-content p { color: #dddcec; font-size: 0.9rem; margin-bottom: 1rem; line-height: 1.5; }
+        .project-tag { background: rgba(255, 207, 122, 0.2); color: #ffcf7a; display: inline-block; padding: 0.2rem 0.8rem; border-radius: 20px; font-size: 0.7rem; margin: 0.2rem; }
+        
+        .strength-card { text-align: center; padding: 2rem; }
+        .strength-icon { font-size: 2.5rem; color: #ffcf7a; margin-bottom: 1rem; }
+        .strength-card h3 { font-size: 1.3rem; margin-bottom: 0.5rem; color: #ffcf7a; }
+        .strength-card p { color: #dddcec; font-size: 0.85rem; line-height: 1.4; }
+        
+        .contact-item { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; }
+        .contact-icon { width: 50px; height: 50px; background: rgba(199, 138, 255, 0.3); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; color: #ffbc6e; }
+        .career-box { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid rgba(255, 188, 110, 0.2); }
+        .career-box h4 { color: #ffcf7a; margin-bottom: 0.8rem; }
+        
+        .form-group { margin-bottom: 1.2rem; }
+        .form-control {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 207, 122, 0.5);
+            border-radius: 60px;
+            color: white;
+            font-family: 'Poppins', sans-serif;
+        }
+        textarea.form-control { border-radius: 30px; min-height: 120px; resize: vertical; }
+        .form-control:focus { outline: none; border-color: #ffbc6e; }
+        
+        /* Grid Layouts */
+        .education-grid, .skills-container, .projects-grid, .strengths-grid, .contact-container {
+            display: grid;
+            gap: 2rem;
+        }
+        .education-grid { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+        .skills-container { grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
+        .projects-grid { grid-template-columns: repeat(auto-fit, minmax(330px, 1fr)); }
+        .strengths-grid { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+        .contact-container { grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); }
+        
+        /* Footer */
+        footer {
+            background: rgba(5, 5, 20, 0.8);
+            backdrop-filter: blur(12px);
+            border-top: 1px solid rgba(255, 188, 110, 0.4);
+            padding: 3rem 0 2rem;
+            margin-top: 2rem;
+        }
+        .footer-container { max-width: 1300px; margin: 0 auto; padding: 0 2rem; }
+        .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin-bottom: 2rem; }
+        .footer-col h3 { font-size: 1.3rem; margin-bottom: 1rem; background: linear-gradient(135deg, #ffcf7a, #b77dff); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .footer-col p { color: #dddcec; font-size: 0.9rem; margin-bottom: 0.5rem; }
+        .footer-links { display: flex; flex-direction: column; gap: 0.8rem; }
+        .footer-links a { color: #dddcec; text-decoration: none; font-size: 0.9rem; transition: color 0.3s; }
+        .footer-links a:hover { color: #ffcf7a; }
+        
+        .social-links { display: flex; gap: 1rem; margin-top: 1rem; flex-wrap: wrap; }
+        .social-links a {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: rgba(255, 207, 122, 0.15);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffcf7a;
+            font-size: 1.2rem;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+        .social-links a:hover { background: #ffcf7a; color: #050510; transform: translateY(-3px); }
+        
+        .copyright { text-align: center; padding-top: 2rem; border-top: 1px solid rgba(255, 188, 110, 0.2); color: #aaa; font-size: 0.85rem; }
+        
+        .theme-toggle-btn {
+            position: fixed;
+            bottom: 2rem;
+            left: 2rem;
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: linear-gradient(145deg, #ffcf7a, #b77dff);
+            color: #0a0a1a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 1000;
+            border: none;
+            font-size: 1.6rem;
+        }
+        .scroll-indicator {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 50px;
+            height: 50px;
+            background: #ffbc6e;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #050510;
+            font-size: 1.4rem;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: 0.3s;
+            z-index: 100;
+        }
+        .scroll-indicator.active { opacity: 1; visibility: visible; }
+        
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 992px) {
+            .hero-row { flex-direction: column; text-align: center; }
+            .hero h1 { font-size: 3rem; }
+            .profile-img { width: 260px; height: 260px; }
+            .typing-text { font-size: 1.2rem; }
+            .btn-group { justify-content: center; }
+        }
+        
+        @media (max-width: 768px) {
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 70%;
+                height: 100vh;
+                background: rgba(12,12,35,0.96);
+                backdrop-filter: blur(28px);
+                flex-direction: column;
+                justify-content: center;
+                transition: right 0.3s;
+                z-index: 99;
+            }
+            .nav-links.active { right: 0; }
+            .mobile-menu-btn { display: block; }
+            .section-title { font-size: 2rem; }
+            .footer-grid { grid-template-columns: 1fr; text-align: center; }
+            .social-links { justify-content: center; }
+            .education-grid, .skills-container, .projects-grid, .strengths-grid, .contact-container { gap: 1.5rem; }
+            
+            /* Buttons Mobile Stack */
+            .btn-group {
+                flex-direction: column;
+                align-items: center;
+                width: 100%;
+            }
+            .btn-group .btn {
+                width: 100%;
+                max-width: 250px;
+            }
+            .btn-group .btn-outline {
+                margin-left: 0;
+            }
+            
+            /* About Mobile - Image Pehle */
+            .about-container {
+                display: flex !important;
+                flex-direction: column !important;
+            }
+            .about-container .about-image {
+                order: 1 !important;
+                margin-bottom: 1.5rem;
+            }
+            .about-container .about-text {
+                order: 2 !important;
+            }
+        }
+        
+        /* Desktop About - Image Right Side */
+        @media (min-width: 769px) {
+            .about-container {
+                display: grid !important;
+                grid-template-columns: 1fr 1fr !important;
+                gap: 3rem !important;
+                align-items: center !important;
+            }
+            .about-container .about-image {
+                order: 2 !important;
+                text-align: center;
+            }
+            .about-container .about-image img {
+                width: 85% !important;
+            }
+            .about-container .about-text {
+                order: 1 !important;
+            }
+        }
+        
+        .about-image img {
+            width: 90%;
+            border-radius: 34px;
+            box-shadow: 0 25px 40px -12px #b77dff;
+            border: 2px solid #ffbc6e;
+        }
+    </style>
+</head>
+<body>
+    <div class="custom-cursor"></div>
+    <div class="cursor-follower"></div>
+    <canvas id="wave-bg-canvas"></canvas>
+    <div class="ambient-glow"></div>
+
+    <button class="theme-toggle-btn" id="themeToggle"><i class="fas fa-palette"></i></button>
+    <div class="scroll-indicator" id="scrollTop"><i class="fas fa-arrow-up"></i></div>
+
+    <header>
+        <div class="header-container">
+            <a href="#" class="logo">✦ Shruti.dev</a>
+            <nav class="nav-links" id="navLinks">
+                <a href="#home" class="active">Home</a><a href="#about">About</a><a href="#education">Education</a>
+                <a href="#skills">Skills</a><a href="#projects">Projects</a><a href="#strengths">Strengths</a><a href="#contact">Contact</a>
+            </nav>
+            <button class="mobile-menu-btn" id="menuToggle"><i class="fas fa-feather-alt"></i></button>
+        </div>
+    </header>
+
+    <div class="container">
+        <section class="hero" id="home">
+            <div class="hero-row">
+                <div class="hero-content">
+                    <h1>I'm <span>Shruti Gupta</span></h1>
+                    <div class="typing-text" id="typingText"></div>
+                    <p>BCA Scholar | Web Alchemist | O Level Certified | Digital Creator</p>
+                    <div class="btn-group">
+                        <a href="#contact" class="btn">Connect ✨</a>
+                        <a href="#projects" class="btn btn-outline">View Projects</a>
+                    </div>
+                </div>
+                <div class="hero-image">
+                    <img class="profile-img" src="shruti.jpg" alt="Shruti Gupta">
+                </div>
+            </div>
+        </section>
+
+        <section id="about">
+            <h2 class="section-title">About Me</h2>
+            <div class="about-container">
+                <div class="about-image">
+                    <img src="shruti2.jpg" alt="Shruti Gupta">
+                </div>
+                <div class="about-text">
+                    <h3 style="color:#ffcf7a; font-size: 1.9rem;">Code Meets Creativity</h3>
+                    <p>I'm Shruti Gupta, a passionate BCA student at Rajju Bhaiya University with NIELIT O Level certification. My academic journey started from High School at Lalchandra Jasra (80% in 2023) and Intermediate from GGIC Jasra (70% in 2025).</p>
+                    <p>I have a strong interest in web development and creating modern, user-friendly websites. I enjoy learning new technologies and continuously improving my skills. My goal is to become a full-stack developer and inspire other young minds to pursue careers in technology.</p>
+                    <p>When I'm not coding, I love exploring new design trends, reading tech blogs, and working on personal projects that challenge my creativity.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="education">
+            <h2 class="section-title">My Education</h2>
+            <div class="education-grid">
+                <div class="education-card"><h3>🎓 High School (10th)</h3><span class="year-badge">2023 | 80%</span><p>Lalchandra Jasra, UP Board</p><i class="fas fa-star" style="color:#ffcf7a;"></i> Scholar Excellence</div>
+                <div class="education-card"><h3>📖 Intermediate (12th)</h3><span class="year-badge">2025 | 70%</span><p>GGIC Jasra, UP Board</p><i class="fas fa-chalkboard"></i> PCM with CS</div>
+                <div class="education-card"><h3>💻 O Level (NIELIT)</h3><span class="year-badge">Present</span><p>ASIT Institute, Gauhaniya</p><p>Foundation of IT & Programming</p></div>
+                <div class="education-card"><h3>🚀 BCA</h3><span class="year-badge">Present</span><p>Rajju Bhaiya University</p><p>Web Dev & Modern Tech</p></div>
+            </div>
+        </section>
+
+        <section id="skills">
+            <h2 class="section-title">My Skills</h2>
+            <div class="skills-container">
+                <div class="skill-category"><h3><i class="fas fa-code"></i> Web Development</h3>
+                    <div class="skill-item"><div class="skill-info"><span>HTML5/CSS3</span><span>90%</span></div><div class="skill-bar"><div class="skill-progress" data-width="90"></div></div></div>
+                    <div class="skill-item"><div class="skill-info"><span>JavaScript</span><span>75%</span></div><div class="skill-bar"><div class="skill-progress" data-width="75"></div></div></div>
+                    <div class="skill-item"><div class="skill-info"><span>React.js</span><span>65%</span></div><div class="skill-bar"><div class="skill-progress" data-width="65"></div></div></div>
+                </div>
+                <div class="skill-category"><h3><i class="fas fa-database"></i> Programming</h3>
+                    <div class="skill-item"><div class="skill-info"><span>Python Basics</span><span>70%</span></div><div class="skill-bar"><div class="skill-progress" data-width="70"></div></div></div>
+                    <div class="skill-item"><div class="skill-info"><span>SQL/MySQL</span><span>75%</span></div><div class="skill-bar"><div class="skill-progress" data-width="75"></div></div></div>
+                    <div class="skill-item"><div class="skill-info"><span>PHP Basics</span><span>60%</span></div><div class="skill-bar"><div class="skill-progress" data-width="60"></div></div></div>
+                </div>
+                <div class="skill-category"><h3><i class="fas fa-tools"></i> Soft Skills</h3>
+                    <div class="skill-item"><div class="skill-info"><span>Communication</span><span>85%</span></div><div class="skill-bar"><div class="skill-progress" data-width="85"></div></div></div>
+                    <div class="skill-item"><div class="skill-info"><span>Leadership</span><span>80%</span></div><div class="skill-bar"><div class="skill-progress" data-width="80"></div></div></div>
+                    <div class="skill-item"><div class="skill-info"><span>Problem Solving</span><span>85%</span></div><div class="skill-bar"><div class="skill-progress" data-width="85"></div></div></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="projects">
+            <h2 class="section-title">My Projects</h2>
+            <div class="projects-grid">
+                <div class="project-card">
+                    <img class="project-img" src="img.jpg" alt="Prayagraj Tourism">
+                    <div class="project-content">
+                        <h3> Prayagraj Tourism Website 🙏</h3>
+                        <p>A complete travel guide website showcasing the cultural heritage, sacred ghats, Triveni Sangam, Kumbh Mela, local cuisine, and upcoming festivals of Prayagraj city.</p>
+                        <div><span class="project-tag">HTML/CSS</span><span class="project-tag">Responsive</span><span class="project-tag">Tourism</span></div>
+                        <a href="https://github.com/shrutii58/prayagraj-tourism" target="_blank" style="display: inline-flex; align-items: center; gap: 0.5rem; margin-top: 1rem; margin-right: 0.8rem; padding: 0.5rem 1.2rem; background: rgba(255, 207, 122, 0.15); border-radius: 40px; color: #ffcf7a; text-decoration: none; font-size: 0.85rem;">
+                            <i class="fab fa-github"></i> Code 🔗
+                        </a>
+                        <a href="https://shrutii58.github.io/prayagraj-tourism/" target="_blank" style="display: inline-flex; align-items: center; gap: 0.5rem; margin-top: 1rem; padding: 0.5rem 1.2rem; background: rgba(255, 207, 122, 0.15); border-radius: 40px; color: #ffcf7a; text-decoration: none; font-size: 0.85rem;">
+                            <i class="fas fa-globe"></i> Live Demo 🌐
+                        </a>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <img class="project-img" src="https://images.pexels.com/photos/177598/pexels-photo-177598.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Portfolio">
+                    <div class="project-content">
+                        <h3>✨ Premium Portfolio</h3>
+                        <p>Modern portfolio with 3D background, dark/light mode, and smooth animations.</p>
+                        <div><span class="project-tag">HTML/CSS</span><span class="project-tag">Three.js</span><span class="project-tag">GSAP</span></div>
+                        <a href="#" target="_blank" style="display: inline-flex; align-items: center; gap: 0.5rem; margin-top: 1rem; padding: 0.5rem 1.2rem; background: rgba(255, 207, 122, 0.15); border-radius: 40px; color: #ffcf7a; text-decoration: none; font-size: 0.85rem;"><i class="fab fa-github"></i> GitHub</a>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <img class="project-img" src="https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg?auto=compress&cs=tinysrgb&w=600" alt="E-commerce">
+                    <div class="project-content">
+                        <h3>🛍️ E-Commerce Landing</h3>
+                        <p>Responsive product landing page with interactive UI and animations.</p>
+                        <div><span class="project-tag">Responsive</span><span class="project-tag">CSS Grid</span></div>
+                        <a href="#" target="_blank" style="display: inline-flex; align-items: center; gap: 0.5rem; margin-top: 1rem; padding: 0.5rem 1.2rem; background: rgba(255, 207, 122, 0.15); border-radius: 40px; color: #ffcf7a; text-decoration: none; font-size: 0.85rem;"><i class="fab fa-github"></i> GitHub</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="strengths">
+            <h2 class="section-title">My Strengths</h2>
+            <div class="strengths-grid">
+                <div class="strength-card"><div class="strength-icon"><i class="fas fa-hard-hat"></i></div><h3>Hard Working</h3><p>Committed to putting in the effort required to achieve my goals.</p></div>
+                <div class="strength-card"><div class="strength-icon"><i class="fas fa-users"></i></div><h3>Leadership</h3><p>Ability to guide and motivate others towards achieving objectives.</p></div>
+                <div class="strength-card"><div class="strength-icon"><i class="fas fa-rocket"></i></div><h3>Quick Learner</h3><p>Capable of adapting to new technologies and concepts rapidly.</p></div>
+                <div class="strength-card"><div class="strength-icon"><i class="fas fa-hand-holding-heart"></i></div><h3>Honesty</h3><p>Committed to truthfulness and integrity in all professional dealings.</p></div>
+            </div>
+        </section>
+
+        <section id="contact">
+            <h2 class="section-title">Get In Touch</h2>
+            <div class="contact-container">
+                <div class="contact-info" style="padding:2rem;">
+                    <h3>Contact Details</h3>
+                    <div class="contact-item"><div class="contact-icon"><i class="fas fa-user"></i></div><div><h4>Shruti Gupta</h4><p>Web Developer & BCA Student</p></div></div>
+                    <div class="contact-item"><div class="contact-icon"><i class="fas fa-phone"></i></div><div><h4>Phone</h4><p>+91 9198100828</p></div></div>
+                    <div class="contact-item"><div class="contact-icon"><i class="fas fa-envelope"></i></div><div><h4>Email</h4><p>shruti2389@gmail.com</p></div></div>
+                    <div class="contact-item"><div class="contact-icon"><i class="fab fa-github"></i></div><div><h4>GitHub</h4><p><a href="https://github.com/shrutii58" target="_blank" style="color:#ffcf7a;">github.com/shrutii58</a></p></div></div>
+                    <div class="career-box"><h4><i class="fas fa-bullseye"></i> Career Goal</h4><p>To obtain a position where I can utilize my technical skills and creativity to build impactful digital experiences.</p></div>
+                </div>
+                <div class="contact-form" style="padding:2rem;">
+                    <h3>Send a Message</h3>
+                    <form id="contactForm">
+                        <div class="form-group"><input type="text" class="form-control" placeholder="Your Name" required></div>
+                        <div class="form-group"><input type="email" class="form-control" placeholder="Your Email" required></div>
+                        <div class="form-group"><input type="text" class="form-control" placeholder="Subject"></div>
+                        <div class="form-group"><textarea class="form-control" placeholder="Your Message" required></textarea></div>
+                        <button type="submit" class="btn">Send Message ✨</button>
+                        <p id="formFeedback" style="margin-top:1rem"></p>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h3>Shruti Gupta</h3>
+                    <p>BCA Scholar & Web Alchemist — crafting digital experiences with elegance.</p>
+                    <div class="social-links">
+                        <a href="https://github.com/shrutii58" target="_blank"><i class="fab fa-github"></i></a>
+                        <a href="#" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" target="_blank"><i class="fab fa-instagram"></i></a>
+                        <a href="#" target="_blank"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h3>Quick Links</h3>
+                    <div class="footer-links">
+                        <a href="#home">Home</a><a href="#about">About</a><a href="#education">Education</a>
+                        <a href="#skills">Skills</a><a href="#projects">Projects</a><a href="#strengths">Strengths</a><a href="#contact">Contact</a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h3>Contact Info</h3>
+                    <p><i class="fas fa-phone"></i> +91 9198100828</p>
+                    <p><i class="fas fa-envelope"></i> shruti2389@gmail.com</p>
+                    <p><i class="fas fa-map-marker-alt"></i> Jasra, Prayagraj, India</p>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>© 2025 Shruti Gupta — Where Visions Blossom | BCA Scholar & Digital Artist</p>
+                <p style="font-size:0.8rem; margin-top:0.5rem;">✦ From Jasra to the Infinite Web ✦</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 3D WAVE BACKGROUND
+        const bgCanvas = document.getElementById('wave-bg-canvas');
+        const scene = new THREE.Scene();
+        scene.background = null;
+        const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.2, 1000);
+        camera.position.set(0, 2, 12);
+        camera.lookAt(0, 0, 0);
+        const renderer = new THREE.WebGLRenderer({ canvas: bgCanvas, alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(window.devicePixelRatio);
+        renderer.setClearColor(0x000000, 0);
+
+        const ambiance = new THREE.AmbientLight(0x332244);
+        scene.add(ambiance);
+        const light1 = new THREE.PointLight(0xffaa66, 0.9);
+        light1.position.set(2, 3, 4);
+        scene.add(light1);
+        const light2 = new THREE.PointLight(0xaa88ff, 0.8);
+        light2.position.set(-3, 2, 5);
+        scene.add(light2);
+        const backLight = new THREE.DirectionalLight(0xffdd99, 0.6);
+        backLight.position.set(0, 2, -5);
+        scene.add(backLight);
+
+        const particleCountWave = 2800;
+        const waveGeometry = new THREE.BufferGeometry();
+        const positionsWave = new Float32Array(particleCountWave * 3);
+        const colorsWave = new Float32Array(particleCountWave * 3);
+        for (let i = 0; i < particleCountWave; i++) {
+            const x = (Math.random() - 0.5) * 28;
+            const y = (Math.random() - 0.5) * 12;
+            const z = (Math.random() - 0.5) * 22 - 8;
+            positionsWave[i*3] = x;
+            positionsWave[i*3+1] = y;
+            positionsWave[i*3+2] = z;
+            const colorChoice = Math.random() > 0.6 ? 0xffbb77 : 0xc88aff;
+            const r = ((colorChoice >> 16) & 255)/255;
+            const g = ((colorChoice >> 8) & 255)/255;
+            const b = (colorChoice & 255)/255;
+            colorsWave[i*3] = r;
+            colorsWave[i*3+1] = g;
+            colorsWave[i*3+2] = b;
+        }
+        waveGeometry.setAttribute('position', new THREE.BufferAttribute(positionsWave, 3));
+        waveGeometry.setAttribute('color', new THREE.BufferAttribute(colorsWave, 3));
+        const particleMat = new THREE.PointsMaterial({ size: 0.12, vertexColors: true, transparent: true, opacity: 0.65, blending: THREE.AdditiveBlending });
+        const waveParticles = new THREE.Points(waveGeometry, particleMat);
+        scene.add(waveParticles);
+
+        const ringGeo = new THREE.TorusGeometry(1.5, 0.07, 96, 200);
+        const ringMat = new THREE.MeshStandardMaterial({ color: 0xffbc6e, emissive: 0x552200, metalness: 0.85 });
+        const ringObj = new THREE.Mesh(ringGeo, ringMat);
+        ringObj.position.set(2.2, -0.5, -3);
+        scene.add(ringObj);
+        
+        const ring2Geo = new THREE.TorusGeometry(1.2, 0.06, 80, 160);
+        const ringMat2 = new THREE.MeshStandardMaterial({ color: 0xbc8aff, emissive: 0x331166 });
+        const ringObj2 = new THREE.Mesh(ring2Geo, ringMat2);
+        ringObj2.position.set(-2, 1.2, -4);
+        scene.add(ringObj2);
+
+        const orbGroup = [];
+        for (let i=0;i<60;i++) {
+            const orbGeo = new THREE.SphereGeometry(0.07, 8, 8);
+            const orbMat = new THREE.MeshStandardMaterial({ color: 0xffaa88, emissive: 0xaa55ff });
+            const orb = new THREE.Mesh(orbGeo, orbMat);
+            orb.position.set((Math.random() - 0.5)*12, (Math.random() - 0.5)*8, (Math.random() - 0.5)*12 - 5);
+            scene.add(orb);
+            orbGroup.push(orb);
+        }
+
+        let mouseWaveX = 0, mouseWaveY = 0;
+        document.addEventListener('mousemove', (e) => {
+            mouseWaveX = (e.clientX / window.innerWidth) * 2 - 1;
+            mouseWaveY = (e.clientY / window.innerHeight) * 2 - 1;
+        });
+
+        let clock = 0;
+        function animateWaveBG() {
+            requestAnimationFrame(animateWaveBG);
+            clock += 0.012;
+            const positionsAttr = waveGeometry.attributes.position.array;
+            for (let i = 0; i < particleCountWave; i++) {
+                const origX = positionsWave[i*3];
+                const origZ = positionsWave[i*3+2];
+                const newY = Math.sin(origX * 0.7 + clock) * 0.42 + Math.cos(origZ * 0.6 + clock*0.8) * 0.38;
+                positionsAttr[i*3+1] = newY;
+            }
+            waveGeometry.attributes.position.needsUpdate = true;
+            ringObj.rotation.x += 0.008;
+            ringObj.rotation.z += 0.005;
+            ringObj2.rotation.y += 0.01;
+            ringObj2.rotation.x = Math.sin(clock*0.6)*0.2;
+            orbGroup.forEach((orb, idx) => { orb.position.y += Math.sin(clock + idx) * 0.003; orb.position.x += Math.cos(clock*0.7 + idx) * 0.002; });
+            const targetCamX = mouseWaveX * 1.2;
+            const targetCamY = mouseWaveY * 0.8;
+            camera.position.x += (targetCamX - camera.position.x) * 0.05;
+            camera.position.y += (targetCamY - camera.position.y) * 0.05;
+            camera.lookAt(0, 0, 0);
+            light1.intensity = 0.8 + Math.sin(clock*1.2)*0.3;
+            renderer.render(scene, camera);
+        }
+        animateWaveBG();
+        window.addEventListener('resize', () => { camera.aspect = window.innerWidth / window.innerHeight; camera.updateProjectionMatrix(); renderer.setSize(window.innerWidth, window.innerHeight); });
+
+        // Typing Animation
+        const roles = ["BCA Student 💻", "Web Developer ✨", "Tech Enthusiast 🚀", "Creative Designer 🎨"];
+        let ri = 0, ci = 0, del = false;
+        const typingSpan = document.getElementById('typingText');
+        function typeEffect(){ 
+            const curr = roles[ri]; 
+            if(del){ typingSpan.textContent = curr.substring(0, ci-1); ci--; } 
+            else { typingSpan.textContent = curr.substring(0, ci+1); ci++; } 
+            if(!del && ci === curr.length){ del = true; setTimeout(typeEffect, 2000); return; } 
+            if(del && ci === 0){ del = false; ri = (ri+1)%roles.length; setTimeout(typeEffect, 180); return; } 
+            setTimeout(typeEffect, del ? 50 : 100); 
+        } typeEffect();
+
+        // Skill Bars Animation
+        const skillObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    document.querySelectorAll('.skill-progress').forEach(bar => {
+                        const width = bar.getAttribute('data-width');
+                        if (width) bar.style.width = width + '%';
+                    });
+                    skillObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+        const skillsSec = document.querySelector('#skills');
+        if (skillsSec) skillObserver.observe(skillsSec);
+
+        // Theme Toggle
+        const themeBtn = document.getElementById('themeToggle');
+        let luxeMode = false;
+        const overlayDiv = document.querySelector('.ambient-glow');
+        themeBtn.addEventListener('click', () => {
+            luxeMode = !luxeMode;
+            document.body.style.backgroundColor = luxeMode ? '#faf3e8' : '#050510';
+            overlayDiv.style.background = luxeMode ? 'radial-gradient(circle, rgba(255,200,130,0.2), #faf3e8)' : 'radial-gradient(circle at 50% 30%, rgba(80, 40, 120, 0.25) 0%, #050510 85%)';
+            document.querySelectorAll('.education-card, .skill-category, .project-card, .strength-card, .contact-info, .contact-form').forEach(el => {
+                el.style.backgroundColor = luxeMode ? 'rgba(250,240,225,0.75)' : 'rgba(18, 18, 40, 0.65)';
+                el.style.color = luxeMode ? '#1f1a2e' : '#fff';
+            });
+        });
+
+        // Cursor
+        const cursor = document.querySelector('.custom-cursor'), follower = document.querySelector('.cursor-follower');
+        document.addEventListener('mousemove',(e)=>{ cursor.style.left=e.clientX+'px'; cursor.style.top=e.clientY+'px'; gsap.to(follower,{x:e.clientX,y:e.clientY,duration:0.2}); });
+        document.querySelectorAll('a, button, .btn, .education-card, .skill-category, .project-card, .strength-card').forEach(el => {
+            el.addEventListener('mouseenter',()=>{ cursor.style.transform='scale(1.6)'; follower.style.width='34px'; follower.style.height='34px'; });
+            el.addEventListener('mouseleave',()=>{ cursor.style.transform='scale(1)'; follower.style.width='46px'; follower.style.height='46px'; });
+        });
+        
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => { anchor.addEventListener('click', function(e) { e.preventDefault(); const target = document.querySelector(this.getAttribute('href')); if(target) window.scrollTo({ top: target.offsetTop-80, behavior:'smooth' }); navLinks.classList.remove('active'); }); });
+        const menuToggleBtn = document.getElementById('menuToggle'), navLinks = document.getElementById('navLinks');
+        menuToggleBtn.addEventListener('click',()=>navLinks.classList.toggle('active'));
+        const scrollIndicator = document.getElementById('scrollTop');
+        window.addEventListener('scroll',()=>scrollIndicator.classList.toggle('active',window.pageYOffset>300));
+        scrollIndicator.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
+        
+        const contactForm = document.getElementById('contactForm'), formFeedback = document.getElementById('formFeedback');
+        contactForm.addEventListener('submit',(e)=>{ e.preventDefault(); formFeedback.innerHTML='✨ Thank you! Shruti will respond soon. ✨'; contactForm.reset(); setTimeout(()=>formFeedback.innerHTML='',4000); });
+        
+        gsap.from('.hero-content h1', { duration:1, y:50, opacity:0, ease:'power3' });
+        gsap.from('.hero-image', { duration:1.2, scale:0.9, opacity:0, delay:0.2 });
+        gsap.utils.toArray('section').forEach(section => { gsap.from(section, { scrollTrigger: { trigger: section, start: 'top 85%' }, y:50, opacity:0, duration:0.8 }); });
+    </script>
+</body>
+</html>
