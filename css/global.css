@@ -569,3 +569,130 @@ section { padding: 6rem 0; }
 
 /* ---------- Page main padding ---------- */
 .page-main { padding-top: var(--nav-h); }
+
+/* ============================================================
+   MOBILE OPTIMIZATIONS — 480px and below
+   ============================================================ */
+
+@media (max-width: 480px) {
+  :root { --nav-h: 60px; }
+
+  /* Nav */
+  .nav-inner { padding: 0 1rem; }
+  .nav-logo { font-size: 1.2rem; }
+
+  /* Container */
+  .container { padding: 0 1.1rem; }
+  section { padding: 3.5rem 0; }
+
+  /* Section titles */
+  .section-title { font-size: 1.75rem; }
+  .section-subtitle { font-size: 0.875rem; }
+
+  /* Buttons */
+  .btn { padding: 0.7rem 1.5rem; font-size: 0.85rem; }
+  .btn-group, .hero-cta {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+  }
+  .btn-group .btn, .hero-cta .btn { text-align: center; justify-content: center; }
+
+  /* Footer */
+  .footer { padding: 2.5rem 0 1.5rem; margin-top: 3rem; }
+  .footer-inner { padding: 0 1.1rem; }
+  .footer-bottom { padding: 1rem 1.1rem 0; }
+  .footer-bottom p { font-size: 0.72rem; }
+
+  /* Marquee text size */
+  .marquee-item { font-size: 0.65rem; padding: 0 1.5rem; }
+
+  /* Scroll hint hide on very small screens */
+  .scroll-hint { display: none; }
+}
+
+/* ============================================================
+   MOBILE OPTIMIZATIONS — 768px and below (general)
+   ============================================================ */
+
+@media (max-width: 768px) {
+  /* Stats bar — 2 col */
+  .stats-inner { grid-template-columns: 1fr 1fr; }
+  .stat-item { padding: 1.5rem 1rem; }
+  .stat-number { font-size: 1.8rem; }
+
+  /* Featured card height on mobile */
+  .featured-card { height: 300px !important; }
+
+  /* Footer grid 1 col */
+  .footer-inner { grid-template-columns: 1fr; gap: 1.75rem; }
+
+  /* Polaroid wall 2 col */
+  .strengths-grid { grid-template-columns: 1fr 1fr !important; gap: 1.2rem; }
+
+  /* Timeline padding */
+  .timeline { padding-left: 1.6rem; }
+  .timeline-node { margin-left: -6px; }
+
+  /* Project grid single col */
+  .projects-grid { grid-template-columns: 1fr !important; }
+  .project-card.featured { grid-column: span 1 !important; height: 280px !important; }
+
+  /* Always show project desc on mobile (no hover needed) */
+  .project-desc { opacity: 1 !important; transform: none !important; }
+  .project-actions { opacity: 1 !important; transform: none !important; }
+
+  /* Skill stamps smaller */
+  .stamp { width: 100px; height: 100px; }
+  .stamp-pct { font-size: 1rem; }
+  .stamp-name { font-size: 0.58rem; }
+
+  /* Learning grid 1 col */
+  .learning-grid { grid-template-columns: 1fr !important; }
+
+  /* Contact grid 1 col */
+  .contact-grid { grid-template-columns: 1fr !important; gap: 2rem; }
+
+  /* Social tiles 2 col */
+  .social-tiles { grid-template-columns: 1fr 1fr !important; }
+
+  /* Form wrap padding */
+  .contact-form-wrap { padding: 1.5rem; }
+
+  /* About grid */
+  .about-grid { grid-template-columns: 1fr !important; gap: 2rem; }
+  .about-photo-wrap { order: -1; }
+
+  /* Page hero quotes */
+  .page-hero blockquote { font-size: 1.4rem; padding-left: 1rem; }
+}
+
+/* ============================================================
+   TOUCH DEVICES — remove custom cursor, use native
+   ============================================================ */
+
+@media (hover: none) and (pointer: coarse) {
+  body { cursor: auto; }
+  button, a, .btn { cursor: pointer; }
+  #cursor-dot, #cursor-ring { display: none !important; }
+
+  /* Remove magnetic transform on touch */
+  .btn:hover, .nav-logo:hover, .social-tile:hover {
+    transform: none !important;
+  }
+
+  /* Make project overlays always visible on touch */
+  .project-desc { opacity: 1 !important; transform: none !important; transition: none !important; }
+  .project-actions { opacity: 1 !important; transform: none !important; transition: none !important; }
+  .featured-desc { opacity: 1 !important; transform: none !important; }
+
+  /* Stamp: no press on touch */
+  .stamp:hover { transform: none; }
+
+  /* Polaroid: no rotate change on touch */
+  .polaroid-card:hover { transform: none !important; }
+  .polaroid-card:nth-child(1) { transform: rotate(-3deg); }
+  .polaroid-card:nth-child(2) { transform: rotate(2deg); }
+  .polaroid-card:nth-child(3) { transform: rotate(-1.5deg); }
+  .polaroid-card:nth-child(4) { transform: rotate(2.5deg); }
+}

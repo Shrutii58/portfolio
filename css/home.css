@@ -352,15 +352,27 @@
   .hero-inner {
     grid-template-columns: 1fr;
     text-align: center;
+    gap: 2.5rem;
   }
   .hero-content { max-width: 100%; }
   .hero-bio { margin-left: auto; margin-right: auto; }
   .hero-cta { justify-content: center; }
   .hero-eyebrow { justify-content: center; }
-  .hero-photo-wrap { display: flex; justify-content: center; margin-top: 2rem; }
+  .hero-photo-wrap { display: flex; justify-content: center; margin-top: 1rem; }
   .stats-inner { grid-template-columns: repeat(2, 1fr); }
+  .hero-name { font-size: clamp(2.8rem, 10vw, 4rem); }
 }
 @media (max-width: 500px) {
+  .hero { min-height: auto; padding: calc(var(--nav-h) + 2rem) 0 3rem; }
+  .hero-inner { gap: 2rem; }
+  .hero-name { font-size: clamp(2.2rem, 11vw, 3rem); }
+  .hero-polaroid img { width: 200px; height: 240px; }
+  .hero-polaroid { padding: 10px 10px 42px; }
+  .hero-photo-ring { width: 280px; height: 280px; }
+  .hero-roles { font-size: 0.95rem; }
+  .hero-bio { font-size: 0.875rem; }
+  .hero-cta { flex-direction: column; align-items: center; }
+  .hero-cta .btn { width: 100%; max-width: 260px; justify-content: center; }
   .stats-inner { grid-template-columns: 1fr 1fr; }
-  .hero-polaroid img { width: 220px; height: 260px; }
+  .featured-card { height: 260px; }
 }
