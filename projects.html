@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Projects — Shruti Gupta</title>
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/projects.css">
+</head>
+<body>
+
+  <div id="scroll-progress"></div>
+  <div id="cursor-dot"></div>
+  <div id="cursor-ring"></div>
+  <div id="page-overlay"></div>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">Shruti.dev</a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="skills.html">Skills</a></li>
+        <li><a href="projects.html">Projects</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+      <button class="nav-hamburger" aria-label="Menu">&#9776;</button>
+    </div>
+  </nav>
+  <div class="nav-backdrop"></div>
+  <div class="nav-drawer">
+    <button class="nav-drawer-close" aria-label="Close">&#10005;</button>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="skills.html">Skills</a></li>
+      <li><a href="projects.html">Projects</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </div>
+
+  <main class="page-main">
+
+    <!-- ---- PROJECTS HERO ---- -->
+    <section class="projects-hero">
+      <div class="ambient-blob projects-hero-blob"></div>
+      <div class="container">
+        <div class="reveal">
+          <span class="section-eyebrow">My Work</span>
+          <h1 class="section-title">Projects</h1>
+          <p class="section-subtitle">
+            Things I've built, explored and shipped. Each one taught me something new.
+          </p>
+        </div>
+        <!-- Filter bar -->
+        <div class="filter-bar reveal delay-2">
+          <button class="filter-btn active">All</button>
+          <button class="filter-btn">Web</button>
+          <button class="filter-btn">Design</button>
+          <button class="filter-btn">Frontend</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---- MARQUEE ---- -->
+    <div class="marquee-wrap">
+      <div class="marquee-track">
+        <div class="marquee-item">Prayagraj Tourism <span class="dot"></span></div>
+        <div class="marquee-item">Portfolio Website <span class="dot"></span></div>
+        <div class="marquee-item">E-Commerce UI <span class="dot"></span></div>
+        <div class="marquee-item">HTML · CSS · JS <span class="dot"></span></div>
+        <div class="marquee-item">Responsive Design <span class="dot"></span></div>
+        <div class="marquee-item">Creative Projects <span class="dot"></span></div>
+        <div class="marquee-item">Open Source <span class="dot"></span></div>
+        <div class="marquee-item">GitHub ↗ <span class="dot"></span></div>
+        <div class="marquee-item">Prayagraj Tourism <span class="dot"></span></div>
+        <div class="marquee-item">Portfolio Website <span class="dot"></span></div>
+        <div class="marquee-item">E-Commerce UI <span class="dot"></span></div>
+        <div class="marquee-item">HTML · CSS · JS <span class="dot"></span></div>
+        <div class="marquee-item">Responsive Design <span class="dot"></span></div>
+        <div class="marquee-item">Creative Projects <span class="dot"></span></div>
+        <div class="marquee-item">Open Source <span class="dot"></span></div>
+        <div class="marquee-item">GitHub ↗ <span class="dot"></span></div>
+      </div>
+    </div>
+
+    <!-- ---- PROJECTS GRID ---- -->
+    <section style="padding: 4rem 0 2rem;">
+      <div class="container">
+        <div class="projects-grid">
+
+          <!-- 01: Prayagraj Tourism (featured — spans 2 cols) -->
+          <div class="project-card featured cursor-expand reveal">
+            <img class="project-card-img" src="assets/img.jpg" alt="Prayagraj Tourism">
+            <div class="project-overlay">
+              <div class="project-number">
+                <span class="project-category-dot"></span>
+                01 · WEB · TOURISM
+              </div>
+              <h3>Prayagraj Tourism Website 🙏</h3>
+              <p class="project-desc">
+                A complete travel guide showcasing the cultural heritage, sacred ghats,
+                Triveni Sangam, Kumbh Mela, local cuisine and upcoming festivals of Prayagraj city.
+                Fully responsive, mobile-first design.
+              </p>
+              <div class="project-tags">
+                <span class="tag">HTML/CSS</span>
+                <span class="tag">Responsive</span>
+                <span class="tag">Tourism</span>
+              </div>
+              <div class="project-actions">
+                <a href="https://github.com/shrutii58/prayagraj-tourism" target="_blank" class="project-link">
+                  GitHub ↗
+                </a>
+                <a href="https://shrutii58.github.io/prayagraj-tourism/" target="_blank" class="project-link">
+                  Live Demo ↗
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- 02: Premium Portfolio -->
+          <div class="project-card cursor-expand reveal delay-1">
+            <img class="project-card-img"
+              src="https://images.pexels.com/photos/177598/pexels-photo-177598.jpeg?auto=compress&cs=tinysrgb&w=600"
+              alt="Premium Portfolio">
+            <div class="project-overlay">
+              <div class="project-number">
+                <span class="project-category-dot"></span>
+                02 · DESIGN · PORTFOLIO
+              </div>
+              <h3>Premium Portfolio ✨</h3>
+              <p class="project-desc">
+                Modern portfolio with 3D animated background, dark/light mode toggle
+                and smooth scroll animations. Built with Three.js and GSAP.
+              </p>
+              <div class="project-tags">
+                <span class="tag">HTML/CSS</span>
+                <span class="tag">Three.js</span>
+                <span class="tag">GSAP</span>
+              </div>
+              <div class="project-actions">
+                <a href="https://github.com/shrutii58" target="_blank" class="project-link">GitHub ↗</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- 03: E-Commerce -->
+          <div class="project-card cursor-expand reveal delay-2">
+            <img class="project-card-img"
+              src="https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg?auto=compress&cs=tinysrgb&w=600"
+              alt="E-Commerce Landing">
+            <div class="project-overlay">
+              <div class="project-number">
+                <span class="project-category-dot"></span>
+                03 · FRONTEND · E-COMMERCE
+              </div>
+              <h3>E-Commerce Landing 🛍️</h3>
+              <p class="project-desc">
+                Responsive product landing page with interactive UI, CSS Grid layout
+                and smooth micro-animations. Clean and conversion-focused design.
+              </p>
+              <div class="project-tags">
+                <span class="tag">Responsive</span>
+                <span class="tag">CSS Grid</span>
+              </div>
+              <div class="project-actions">
+                <a href="https://github.com/shrutii58" target="_blank" class="project-link">GitHub ↗</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- 04: Coming Soon -->
+          <div class="project-card coming-soon reveal delay-3">
+            <div class="coming-soon-gear">⚙️</div>
+            <h3>Next Chapter</h3>
+            <p>Something big is being built. Stay tuned...</p>
+            <span class="building-badge">
+              <span class="building-dot"></span>In Progress
+            </span>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ---- CTA ---- -->
+    <div class="projects-cta container reveal">
+      <p>"Every project is a story waiting to be told."</p>
+      <a href="https://github.com/shrutii58" target="_blank" class="btn btn-primary">
+        View All on GitHub ↗
+      </a>
+    </div>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <div class="brand-name">Shruti Gupta</div>
+        <p>BCA Scholar &amp; Web Developer — crafting digital experiences from Prayagraj with elegance and code.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Navigate</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="skills.html">Skills</a></li>
+          <li><a href="projects.html">Projects</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Connect</h4>
+        <ul>
+          <li><a href="https://github.com/shrutii58" target="_blank">GitHub ↗</a></li>
+          <li><a href="mailto:shruti2389@gmail.com">Email ↗</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 <span>Shruti Gupta</span> — Where Visions Blossom</p>
+      <p>✦ From Jasra to the Infinite Web ✦</p>
+    </div>
+  </footer>
+
+  <script src="js/reveal.js"></script>
+  <script src="js/nav.js"></script>
+  <script src="js/cursor.js"></script>
+</body>
+</html>

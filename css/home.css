@@ -1,0 +1,366 @@
+/* ============================================================
+   HOME.CSS — Hero, Stats, Featured Project, Marquee
+   ============================================================ */
+
+/* ---- Hero ---- */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  padding-top: var(--nav-h);
+}
+
+/* Ambient blobs */
+.hero-blob-1 {
+  width: 520px; height: 520px;
+  background: rgba(221,185,106,0.10);
+  top: -120px; right: -100px;
+}
+.hero-blob-2 {
+  width: 380px; height: 380px;
+  background: rgba(196,82,58,0.08);
+  bottom: -80px; left: -80px;
+}
+
+.hero-inner {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 4rem;
+}
+
+/* --- Left side --- */
+.hero-content { max-width: 620px; }
+
+.hero-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+.hero-eyebrow-line {
+  width: 28px; height: 1.5px;
+  background: var(--gold);
+  flex-shrink: 0;
+}
+.hero-eyebrow-text {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  color: var(--gold);
+  text-transform: uppercase;
+}
+
+.hero-greeting {
+  font-family: var(--font-head);
+  font-size: clamp(1rem, 2.5vw, 1.25rem);
+  color: var(--muted);
+  font-style: italic;
+  margin-bottom: 0.4rem;
+}
+
+.hero-name {
+  font-family: var(--font-head);
+  font-size: clamp(3.5rem, 8vw, 6.5rem);
+  font-weight: 700;
+  line-height: 1.0;
+  color: var(--text);
+  position: relative;
+  display: inline-block;
+  margin-bottom: 0.2rem;
+}
+.hero-name svg {
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  width: 100%;
+  height: 18px;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.hero-roles {
+  margin-top: 1.4rem;
+  font-size: clamp(1rem, 2.5vw, 1.25rem);
+  color: var(--gold);
+  font-weight: 500;
+  min-height: 2rem;
+  letter-spacing: 0.01em;
+}
+.hero-roles .cursor-blink {
+  display: inline-block;
+  width: 2px;
+  height: 1.2em;
+  background: var(--gold);
+  margin-left: 2px;
+  vertical-align: text-bottom;
+  animation: blink 0.9s step-end infinite;
+}
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+.hero-bio {
+  margin-top: 1.2rem;
+  font-size: 1rem;
+  color: var(--muted);
+  max-width: 480px;
+  line-height: 1.75;
+}
+
+.hero-cta {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2.5rem;
+  flex-wrap: wrap;
+}
+
+/* --- Right side (photo) --- */
+.hero-photo-wrap {
+  position: relative;
+  flex-shrink: 0;
+}
+.hero-polaroid {
+  position: relative;
+  background: #f5f0e8;
+  padding: 12px 12px 48px;
+  box-shadow:
+    0 0 0 1px rgba(221,185,106,0.3),
+    0 20px 60px -12px rgba(0,0,0,0.7),
+    0 0 80px -20px rgba(221,185,106,0.25);
+  transform: rotate(2.5deg);
+  transition: transform 0.5s var(--transition), box-shadow 0.5s var(--transition);
+}
+.hero-polaroid:hover {
+  transform: rotate(0deg) scale(1.03);
+  box-shadow:
+    0 0 0 1px rgba(221,185,106,0.6),
+    0 30px 80px -12px rgba(0,0,0,0.8),
+    0 0 120px -20px rgba(221,185,106,0.4);
+}
+.hero-polaroid img {
+  width: 280px;
+  height: 320px;
+  object-fit: cover;
+  display: block;
+}
+.hero-polaroid-caption {
+  position: absolute;
+  bottom: 10px;
+  left: 0; right: 0;
+  text-align: center;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.9rem;
+  font-style: italic;
+  color: #555;
+}
+
+/* Ambient ring behind polaroid */
+.hero-photo-ring {
+  position: absolute;
+  width: 360px; height: 360px;
+  border: 1px solid rgba(221,185,106,0.15);
+  border-radius: 50%;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  animation: slow-spin 18s linear infinite;
+  pointer-events: none;
+}
+.hero-photo-ring::before {
+  content: '';
+  position: absolute;
+  top: -4px; left: 50%;
+  width: 8px; height: 8px;
+  background: var(--gold);
+  border-radius: 50%;
+  transform: translateX(-50%);
+}
+@keyframes slow-spin {
+  to { transform: translate(-50%,-50%) rotate(360deg); }
+}
+
+/* ---- Scroll indicator ---- */
+.scroll-hint {
+  position: absolute;
+  bottom: 2.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  z-index: 2;
+}
+.scroll-hint span {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.18em;
+  color: var(--faint);
+  text-transform: uppercase;
+}
+.scroll-hint-arrow {
+  width: 1.5px;
+  height: 36px;
+  background: linear-gradient(180deg, var(--gold), transparent);
+  animation: arrow-drop 1.6s ease-in-out infinite;
+}
+@keyframes arrow-drop {
+  0%, 100% { transform: translateY(0); opacity: 1; }
+  50%       { transform: translateY(8px); opacity: 0.4; }
+}
+
+/* ---- Marquee ---- */
+/* (global marquee styles in global.css — nothing extra needed) */
+
+/* ---- Stats Bar ---- */
+.stats-bar {
+  padding: 4rem 0 0;
+}
+.stats-inner {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+.stat-item {
+  background: var(--surface);
+  padding: 2rem 1.5rem;
+  text-align: center;
+  transition: background 0.3s;
+}
+.stat-item:hover { background: var(--surface-up); }
+.stat-number {
+  font-family: var(--font-head);
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  font-weight: 700;
+  color: var(--gold);
+  line-height: 1;
+  margin-bottom: 0.4rem;
+}
+.stat-label {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+
+/* ---- Featured Project ---- */
+.featured-section { padding: 6rem 0 0; }
+.featured-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 2.5rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+.featured-link {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
+  color: var(--gold);
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: gap 0.2s;
+}
+.featured-link:hover { gap: 0.85rem; }
+
+.featured-card {
+  position: relative;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  height: 460px;
+  border: 1px solid var(--border);
+  cursor: none;
+}
+.featured-card img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transition: transform 0.7s var(--transition);
+}
+.featured-card:hover img { transform: scale(1.06); }
+
+.featured-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    0deg,
+    rgba(14,12,10,0.97) 0%,
+    rgba(14,12,10,0.55) 45%,
+    rgba(14,12,10,0.10) 100%
+  );
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 2.5rem;
+  transition: background 0.4s;
+}
+.featured-card:hover .featured-overlay {
+  background: linear-gradient(
+    0deg,
+    rgba(14,12,10,0.99) 0%,
+    rgba(14,12,10,0.75) 55%,
+    rgba(14,12,10,0.20) 100%
+  );
+}
+.featured-no {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.16em;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 0.6rem;
+}
+.featured-title {
+  font-family: var(--font-head);
+  font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 0.75rem;
+  line-height: 1.2;
+}
+.featured-desc {
+  font-size: 0.9rem;
+  color: var(--muted);
+  max-width: 520px;
+  line-height: 1.65;
+  margin-bottom: 1.4rem;
+  transform: translateY(10px);
+  opacity: 0.7;
+  transition: transform 0.4s var(--transition), opacity 0.4s;
+}
+.featured-card:hover .featured-desc {
+  transform: translateY(0);
+  opacity: 1;
+}
+.featured-tags { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+
+/* ---- Responsive ---- */
+@media (max-width: 900px) {
+  .hero-inner {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+  .hero-content { max-width: 100%; }
+  .hero-bio { margin-left: auto; margin-right: auto; }
+  .hero-cta { justify-content: center; }
+  .hero-eyebrow { justify-content: center; }
+  .hero-photo-wrap { display: flex; justify-content: center; margin-top: 2rem; }
+  .stats-inner { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 500px) {
+  .stats-inner { grid-template-columns: 1fr 1fr; }
+  .hero-polaroid img { width: 220px; height: 260px; }
+}

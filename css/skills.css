@@ -1,0 +1,269 @@
+/* ============================================================
+   SKILLS.CSS — Stamp Badges, Certs, Currently Learning
+   ============================================================ */
+
+/* ---- Page Hero ---- */
+.skills-hero { padding: 5rem 0 3rem; position: relative; }
+.skills-hero-blob {
+  width: 480px; height: 480px;
+  background: rgba(92,158,127,0.08);
+  top: -60px; left: -100px;
+}
+.skills-hero-inner { position: relative; z-index: 2; }
+
+/* ---- Skill Categories ---- */
+.skills-section { padding: 4rem 0 2rem; }
+.skill-category-block { margin-bottom: 4.5rem; }
+.skill-category-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border);
+}
+.skill-category-icon {
+  width: 44px; height: 44px;
+  background: var(--gold-dim);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+.skill-category-header h3 {
+  font-family: var(--font-head);
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--text);
+}
+.skill-category-header span {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--muted);
+  letter-spacing: 0.1em;
+  margin-left: auto;
+}
+
+/* ---- Stamp Grid ---- */
+.stamps-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.2rem;
+}
+
+.stamp {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  background: var(--surface);
+  border: 2px solid rgba(221,185,106,0.28);
+  transition: transform 0.2s var(--transition),
+              border-color 0.3s,
+              box-shadow 0.3s;
+  cursor: none;
+  user-select: none;
+}
+/* Serrated edge via repeating-radial-gradient */
+.stamp::before {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  background: repeating-conic-gradient(
+    var(--surface) 0deg 5deg,
+    transparent 5deg 9deg
+  );
+  z-index: -1;
+}
+.stamp:hover {
+  transform: scale(0.93);
+  border-color: var(--gold);
+  box-shadow: 0 0 24px rgba(221,185,106,0.2);
+}
+.stamp:active { transform: scale(0.88); }
+
+.stamp-name {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text);
+  text-align: center;
+  padding: 0 0.5rem;
+  margin-bottom: 0.35rem;
+}
+.stamp-pct {
+  font-family: var(--font-head);
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--gold);
+}
+
+/* Highlight stamp variant */
+.stamp.accent {
+  background: var(--gold-dim);
+  border-color: rgba(221,185,106,0.5);
+}
+
+/* ---- Certification Card ---- */
+.cert-section { padding: 5rem 0; }
+.cert-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 2.5rem 3rem;
+  position: relative;
+  overflow: hidden;
+  max-width: 680px;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+.cert-card:hover {
+  border-color: var(--border-hover);
+  box-shadow: 0 0 60px -20px rgba(221,185,106,0.2);
+}
+/* Corner accents */
+.cert-card::before,
+.cert-card::after {
+  content: '';
+  position: absolute;
+  width: 50px; height: 50px;
+  border-color: var(--gold);
+  border-style: solid;
+  opacity: 0.5;
+}
+.cert-card::before {
+  top: 12px; left: 12px;
+  border-width: 2px 0 0 2px;
+}
+.cert-card::after {
+  bottom: 12px; right: 12px;
+  border-width: 0 2px 2px 0;
+}
+
+.cert-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.14em;
+  color: var(--gold);
+  text-transform: uppercase;
+  padding: 0.35rem 0.9rem;
+  background: var(--gold-dim);
+  border: 1px solid rgba(221,185,106,0.3);
+  border-radius: 50px;
+  margin-bottom: 1.2rem;
+}
+.cert-card h3 {
+  font-family: var(--font-head);
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 0.5rem;
+}
+.cert-card p {
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.65;
+}
+.cert-meta {
+  display: flex;
+  gap: 2rem;
+  margin-top: 1.5rem;
+  flex-wrap: wrap;
+}
+.cert-meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+.cert-meta-item span:first-child {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  color: var(--gold);
+  text-transform: uppercase;
+}
+.cert-meta-item span:last-child {
+  font-size: 0.875rem;
+  color: var(--text);
+  font-weight: 500;
+}
+
+/* ---- Currently Learning ---- */
+.learning-section { padding: 2rem 0 6rem; }
+.learning-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-top: 3rem;
+}
+.learning-card {
+  background: var(--surface);
+  border: 1px dashed rgba(221,185,106,0.3);
+  border-radius: var(--radius);
+  padding: 1.75rem;
+  position: relative;
+  transition: border-color 0.3s, transform 0.3s var(--transition);
+}
+.learning-card:hover {
+  border-color: rgba(221,185,106,0.6);
+  transform: translateY(-4px);
+}
+.wip-badge {
+  position: absolute;
+  top: 0.9rem; right: 0.9rem;
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.1em;
+  color: var(--green);
+  background: rgba(92,158,127,0.12);
+  border: 1px solid rgba(92,158,127,0.3);
+  padding: 0.2rem 0.55rem;
+  border-radius: 50px;
+  display: flex; align-items: center; gap: 0.35rem;
+}
+.wip-dot {
+  width: 5px; height: 5px;
+  background: var(--green);
+  border-radius: 50%;
+  animation: pulse-dot 1.4s ease-in-out infinite;
+}
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.5; transform: scale(0.7); }
+}
+.learning-icon {
+  font-size: 1.8rem;
+  margin-bottom: 0.9rem;
+}
+.learning-card h3 {
+  font-family: var(--font-head);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 0.4rem;
+}
+.learning-card p {
+  font-size: 0.825rem;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 900px) {
+  .learning-grid { grid-template-columns: 1fr 1fr; }
+  .stamps-grid { gap: 1rem; }
+  .stamp { width: 110px; height: 110px; }
+}
+@media (max-width: 600px) {
+  .learning-grid { grid-template-columns: 1fr; }
+  .cert-card { padding: 1.75rem; }
+}

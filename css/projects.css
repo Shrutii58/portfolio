@@ -1,0 +1,255 @@
+/* ============================================================
+   PROJECTS.CSS — Masonry Cards, Hover Reveal, Coming Soon
+   ============================================================ */
+
+/* ---- Page Hero ---- */
+.projects-hero { padding: 5rem 0 3rem; position: relative; }
+.projects-hero-blob {
+  width: 500px; height: 500px;
+  background: rgba(196,82,58,0.07);
+  top: -60px; right: -100px;
+}
+
+/* ---- Filter Bar ---- */
+.filter-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 2.5rem 0;
+  flex-wrap: wrap;
+}
+.filter-btn {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.4rem 1rem;
+  border-radius: 50px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--muted);
+  transition: all 0.25s;
+  cursor: none;
+}
+.filter-btn:hover,
+.filter-btn.active {
+  background: var(--gold-dim);
+  border-color: var(--border-hover);
+  color: var(--gold);
+}
+
+/* ---- Projects Grid ---- */
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+/* ---- Project Card ---- */
+.project-card {
+  position: relative;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  aspect-ratio: 4 / 3.4;
+  cursor: none;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+.project-card:hover {
+  border-color: var(--border-hover);
+  box-shadow: 0 20px 60px -16px rgba(0,0,0,0.6);
+}
+
+/* Featured card spans 2 columns */
+.project-card.featured {
+  grid-column: span 2;
+  aspect-ratio: unset;
+  height: 420px;
+}
+
+.project-card-img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transition: transform 0.7s var(--transition);
+}
+.project-card:hover .project-card-img { transform: scale(1.07); }
+
+/* Hover reveal overlay */
+.project-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    0deg,
+    rgba(14,12,10,0.98) 0%,
+    rgba(14,12,10,0.65) 50%,
+    rgba(14,12,10,0.15) 100%
+  );
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 1.75rem;
+  transition: background 0.35s;
+}
+.project-card:hover .project-overlay {
+  background: linear-gradient(
+    0deg,
+    rgba(14,12,10,0.99) 0%,
+    rgba(14,12,10,0.82) 60%,
+    rgba(14,12,10,0.25) 100%
+  );
+}
+
+.project-number {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.18em;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+  display: flex; align-items: center; gap: 0.5rem;
+}
+.project-category-dot {
+  width: 5px; height: 5px;
+  background: var(--gold);
+  border-radius: 50%;
+}
+.project-card h3 {
+  font-family: var(--font-head);
+  font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 0.5rem;
+  line-height: 1.2;
+}
+.project-desc {
+  font-size: 0.83rem;
+  color: var(--muted);
+  line-height: 1.6;
+  margin-bottom: 1rem;
+  max-width: 380px;
+  transform: translateY(12px);
+  opacity: 0;
+  transition: transform 0.4s var(--transition), opacity 0.4s;
+}
+.project-card:hover .project-desc {
+  transform: translateY(0);
+  opacity: 1;
+}
+.project-tags { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1rem; }
+.project-actions {
+  display: flex;
+  gap: 0.75rem;
+  transform: translateY(10px);
+  opacity: 0;
+  transition: transform 0.4s 0.06s var(--transition), opacity 0.4s 0.06s;
+}
+.project-card:hover .project-actions {
+  transform: translateY(0);
+  opacity: 1;
+}
+.project-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  color: var(--gold);
+  padding: 0.4rem 0.9rem;
+  border-radius: 50px;
+  background: rgba(221,185,106,0.12);
+  border: 1px solid rgba(221,185,106,0.3);
+  transition: background 0.2s;
+  text-transform: uppercase;
+  cursor: none;
+}
+.project-link:hover { background: rgba(221,185,106,0.22); }
+
+/* ---- Coming Soon Card ---- */
+.project-card.coming-soon {
+  background: var(--surface);
+  border-style: dashed;
+  border-color: rgba(221,185,106,0.22);
+  aspect-ratio: 4 / 3.4;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem;
+  cursor: default;
+}
+.project-card.coming-soon:hover {
+  border-color: rgba(221,185,106,0.45);
+  box-shadow: none;
+}
+.coming-soon-gear {
+  font-size: 2.2rem;
+  animation: gear-spin 4s linear infinite;
+  margin-bottom: 1rem;
+}
+@keyframes gear-spin {
+  to { transform: rotate(360deg); }
+}
+.project-card.coming-soon h3 {
+  font-family: var(--font-head);
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--muted);
+  margin-bottom: 0.5rem;
+}
+.project-card.coming-soon p {
+  font-size: 0.8rem;
+  color: var(--faint);
+  line-height: 1.5;
+  max-width: 200px;
+}
+.building-badge {
+  margin-top: 1rem;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--green);
+  padding: 0.28rem 0.75rem;
+  background: rgba(92,158,127,0.1);
+  border: 1px solid rgba(92,158,127,0.3);
+  border-radius: 50px;
+  display: flex; align-items: center; gap: 0.4rem;
+}
+.building-dot {
+  width: 5px; height: 5px;
+  background: var(--green);
+  border-radius: 50%;
+  animation: pulse-dot 1.4s ease-in-out infinite;
+}
+
+/* ---- CTA after grid ---- */
+.projects-cta {
+  text-align: center;
+  padding: 5rem 0 6rem;
+}
+.projects-cta p {
+  font-family: var(--font-head);
+  font-size: clamp(1.3rem, 3vw, 1.9rem);
+  font-style: italic;
+  color: var(--muted);
+  margin-bottom: 2rem;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.4;
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 900px) {
+  .projects-grid { grid-template-columns: 1fr 1fr; }
+  .project-card.featured { grid-column: span 2; height: 340px; }
+}
+@media (max-width: 600px) {
+  .projects-grid { grid-template-columns: 1fr; }
+  .project-card.featured { grid-column: span 1; height: 280px; }
+  .project-desc, .project-actions { opacity: 1; transform: none; }
+}
