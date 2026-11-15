@@ -1,0 +1,274 @@
+/* ============================================================
+   ABOUT.CSS — Story, Timeline, Polaroid Strengths
+   ============================================================ */
+
+/* ---- Page Hero ---- */
+.page-hero {
+  padding: 5rem 0 4rem;
+  position: relative;
+  overflow: hidden;
+}
+.page-hero-blob {
+  width: 500px; height: 500px;
+  background: rgba(221,185,106,0.07);
+  top: -100px; right: -100px;
+}
+.page-hero-inner {
+  position: relative;
+  z-index: 2;
+  max-width: 700px;
+}
+.page-hero blockquote {
+  font-family: var(--font-head);
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  font-weight: 600;
+  font-style: italic;
+  color: var(--text);
+  line-height: 1.25;
+  margin: 1.2rem 0 1rem;
+  border-left: 3px solid var(--gold);
+  padding-left: 1.5rem;
+}
+.page-hero cite {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  color: var(--gold);
+  text-transform: uppercase;
+}
+
+/* ---- About Story ---- */
+.about-story { padding-top: 2rem; }
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5rem;
+  align-items: center;
+}
+.about-text h3 {
+  font-family: var(--font-head);
+  font-size: clamp(1.4rem, 3vw, 1.9rem);
+  font-weight: 600;
+  color: var(--gold);
+  margin-bottom: 1.2rem;
+  font-style: italic;
+}
+.about-text p {
+  color: var(--muted);
+  font-size: 0.975rem;
+  line-height: 1.85;
+  margin-bottom: 1rem;
+}
+.about-text p strong { color: var(--text); font-weight: 600; }
+
+/* Photo with SVG squiggle border */
+.about-photo-wrap { position: relative; }
+.about-photo-frame {
+  position: relative;
+  display: inline-block;
+}
+.about-photo-frame img {
+  width: 100%;
+  border-radius: 22px;
+  display: block;
+  position: relative;
+  z-index: 1;
+  box-shadow: 0 30px 80px -16px rgba(0,0,0,0.7),
+              0 0 80px -20px rgba(221,185,106,0.2);
+}
+/* Decorative corner accents */
+.about-photo-frame::before,
+.about-photo-frame::after {
+  content: '';
+  position: absolute;
+  width: 40px; height: 40px;
+  border-color: var(--gold);
+  border-style: solid;
+  z-index: 2;
+}
+.about-photo-frame::before {
+  top: -8px; left: -8px;
+  border-width: 2px 0 0 2px;
+  border-radius: 4px 0 0 0;
+}
+.about-photo-frame::after {
+  bottom: -8px; right: -8px;
+  border-width: 0 2px 2px 0;
+  border-radius: 0 0 4px 0;
+}
+.about-photo-glow {
+  position: absolute;
+  inset: -20px;
+  background: radial-gradient(ellipse at center, rgba(221,185,106,0.12) 0%, transparent 65%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ---- Education Timeline ---- */
+.timeline-section { padding: 6rem 0; }
+.timeline-header { margin-bottom: 3.5rem; }
+
+.timeline {
+  position: relative;
+  padding-left: 2.5rem;
+}
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 8px;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(180deg, var(--gold), rgba(221,185,106,0.1));
+}
+
+.timeline-item {
+  position: relative;
+  margin-bottom: 3rem;
+  padding-left: 1.5rem;
+}
+.timeline-item:last-child { margin-bottom: 0; }
+
+/* Node circle */
+.timeline-node {
+  position: absolute;
+  left: -2.5rem;
+  top: 4px;
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  background: var(--surface);
+  border: 2px solid rgba(221,185,106,0.35);
+  display: flex; align-items: center; justify-content: center;
+  transition: border-color 0.4s, background 0.4s;
+  z-index: 1;
+  margin-left: -8px;
+}
+.timeline-node::after {
+  content: '';
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--gold);
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+.timeline-item.visible .timeline-node {
+  border-color: var(--gold);
+}
+.timeline-item.visible .timeline-node::after {
+  opacity: 1;
+}
+
+.timeline-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.5rem 1.75rem;
+  transition: border-color 0.3s, transform 0.3s var(--transition);
+}
+.timeline-card:hover {
+  border-color: var(--border-hover);
+  transform: translateX(6px);
+}
+.timeline-year {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+.timeline-card h3 {
+  font-family: var(--font-head);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 0.25rem;
+}
+.timeline-card p {
+  font-size: 0.875rem;
+  color: var(--muted);
+  line-height: 1.5;
+}
+.timeline-badge {
+  display: inline-block;
+  margin-top: 0.6rem;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  padding: 0.22rem 0.65rem;
+  border-radius: 50px;
+  background: var(--gold-dim);
+  color: var(--gold);
+  letter-spacing: 0.08em;
+}
+
+/* ---- Strengths Polaroid Wall ---- */
+.strengths-section { padding: 6rem 0; }
+.strengths-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
+  margin-top: 3rem;
+}
+.polaroid-card {
+  background: #f5f0e8;
+  padding: 14px 14px 52px;
+  box-shadow: 0 12px 40px -8px rgba(0,0,0,0.55);
+  position: relative;
+  transition: transform 0.5s var(--transition), box-shadow 0.5s var(--transition);
+  cursor: none;
+}
+.polaroid-card:nth-child(1) { transform: rotate(-3deg); }
+.polaroid-card:nth-child(2) { transform: rotate(2deg); }
+.polaroid-card:nth-child(3) { transform: rotate(-1.5deg); }
+.polaroid-card:nth-child(4) { transform: rotate(2.5deg); }
+
+.polaroid-card:hover { transform: rotate(0deg) scale(1.05); box-shadow: 0 24px 60px -8px rgba(0,0,0,0.65); }
+
+.polaroid-inner {
+  background: var(--surface-up);
+  padding: 1.75rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 140px;
+}
+.polaroid-icon {
+  font-size: 2.2rem;
+  margin-bottom: 0.75rem;
+}
+.polaroid-card h3 {
+  font-family: var(--font-head);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text);
+  text-align: center;
+  margin-bottom: 0.35rem;
+}
+.polaroid-card p {
+  font-size: 0.78rem;
+  color: var(--muted);
+  text-align: center;
+  line-height: 1.5;
+}
+.polaroid-caption {
+  position: absolute;
+  bottom: 10px;
+  left: 0; right: 0;
+  text-align: center;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.82rem;
+  font-style: italic;
+  color: #888;
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 900px) {
+  .about-grid { grid-template-columns: 1fr; gap: 3rem; }
+  .about-photo-wrap { order: -1; }
+  .strengths-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 500px) {
+  .strengths-grid { grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+  .timeline { padding-left: 1.8rem; }
+}
